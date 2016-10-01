@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DIARA</title>
+    <link rel="stylesheet" href="/static/stylesheets/main.css">
+  </head>
+  <body>
+    <h1>SIGN-UP</h1>
+    <form class="" action="/sign-up" method="post">
+      <div><input type="text"      name="firstname"  placeholder="firstname"></div>
+      <div><input type="text"      name="lastname"   placeholder="lastname"></div>
+      <div><input type="text"      name="username"   placeholder="username"></div>
+      <div><input type="email"     name="email"      placeholder="email"></div>
+      <div><input type="password"  name="password"   placeholder="password"></div>
+      <button>Okay</button>
+    </form>
+    <a href="/"><button>Back to Index</button></a>
+    <h1>{{ message }}</h1>
+  </body>
+</html>
