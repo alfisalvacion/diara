@@ -1,16 +1,12 @@
 
-CREATE DATABASE diara;
-
-\c diara
-
 CREATE TABLE person
 (
     id serial NOT NULL,
-    username character varying(20) NOT NULL,
-    email character varying(20) NOT NULL,
-    password character varying(20) NOT NULL UNIQUE,
-    first_name character varying(50) NOT NULL,
-    last_name character varying(50) NOT NULL,
+    username character varying(100) NOT NULL,
+    email character varying(100) NOT NULL,
+    password character varying(100) NOT NULL UNIQUE,
+    first_name character varying(100) NOT NULL,
+    last_name character varying(100) NOT NULL,
     CONSTRAINT user_pkey PRIMARY KEY (id)
 );
 
@@ -97,7 +93,7 @@ CREATE TABLE assignment
 CREATE TABLE attachment
 (
     task_id serial NOT NULL,
-    filename character varying(30) NOT NULL,
+    filename character varying(100) NOT NULL,
     CONSTRAINT attachment_pkey PRIMARY KEY (filename, task_id),
     CONSTRAINT task_id FOREIGN KEY (task_id)
         REFERENCES task (id) MATCH SIMPLE
@@ -111,7 +107,7 @@ CREATE TABLE comment
     task_id serial NOT NULL,
     user_id serial NOT NULL,
     comment text NOT NULL,
-    attachment character varying(30),
+    attachment character varying(100),
     CONSTRAINT comment_pkey PRIMARY KEY (timeid, task_id, user_id),
     CONSTRAINT task_id FOREIGN KEY (task_id)
         REFERENCES task (id) MATCH SIMPLE
