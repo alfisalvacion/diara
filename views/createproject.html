@@ -6,16 +6,14 @@
     <link rel="stylesheet" href="/static/stylesheets/main.css">
   </head>
   <body>
-    <h1>SIGN-UP</h1>
+    <h1>CREATE PROJECT</h1>
     <form class="" action="/createproject" method="post">
-      <div><input type="text"      name="firstname"  placeholder="firstname"></div>
-      <div><input type="text"      name="lastname"   placeholder="lastname"></div>
-      <div><input type="text"      name="username"   placeholder="username"></div>
-      <div><input type="email"     name="email"      placeholder="email"></div>
-      <div><input type="password"  name="password"   placeholder="password"></div>
+      <div><input type="number"    name="creatorid"     placeholder="creator id"></div><!--OPTIONAL-->
+      <div><input type="textbox"   name="description"   placeholder="description"></div>
+      <div><input type="Date"      name="createdate"    placeholder="createdate"></div>
+      <div><input type="Date"      name="deadline"      placeholder="deadline"></div>
       <button>Okay</button>
     </form>
     <a href="/"><button>Back to Index</button></a>
-    <h1>{{ message }}</h1>
   </body>
 </html>

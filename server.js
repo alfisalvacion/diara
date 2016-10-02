@@ -3,8 +3,7 @@ var morgan = require('morgan');
 var consolidate = require('consolidate');
 var bodyparser = require('body-parser');
 
-// var promise = require('bluebird');
-var options = {promiseLib: Promise};
+var options = {promiseLib: Promise}; // Promise is a default lib in js, just like Math
 var pgp = require('pg-promise')(options);
 var connectionString = 'postgres://japheth:password@localhost:5432/diara';
 var db = pgp(connectionString);
@@ -24,27 +23,13 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use('/static', express.static(__dirname + '/static'));
 
 ////////////////////////////////////////////////////////////////////////////////
-
 app.get('/', function(req, res) {
   res.render('index.html');
 });
-
-app.post('/', function(req, res) {
-  var u = req.body.username;
-  var p = req.body.password;
-  var data = {
-    username: u,
-    password: p
-  }
-  res.render('index.html', data);
-});
-
 ////////////////////////////////////////////////////////////////////////////////
-
 app.get('/signup', function(req, res) {
   res.render('signup.html');
 });
-
 app.post('/signup', function(req, res) {
   var id =        generateID('person');
   var firstname = req.body.firstname;
@@ -52,46 +37,87 @@ app.post('/signup', function(req, res) {
   var username =  req.body.username;
   var email =     req.body.email;
   var password =  req.body.password;
-  db.none("insert into person "+
-  "(id, first_name, last_name, username, email, password) "+
+  db.none("insert into person (id, first_name, last_name, username, email, password) "+
   "values("+id+",'"+firstname+"','"+lastname+"','"+username+"','"+email+"','"+password+"')")
-  .then(function () {
-    res.render('signup.html', {message: 'INSERTED!'});
-  })
-  .catch(function(err) {
-    res.render('signup.html', {message: 'ERROR!'});
-  });
+    .then(function() {
+      res.render('signup.html');
+    })
+    .catch(function(error) {
+      console.log('ERROR IN SIGNUP : ' + error);
+      res.render('signup.html');
+    });
 });
-
 ////////////////////////////////////////////////////////////////////////////////
-
 app.get('/changepassword', function(req, res) {
   res.render('changepass.html');
 });
-
 app.post('/changepassword', function(req, res) {
   var id = req.body.id;
   var op = req.body.oldpassword;
   var np1 = req.body.newpassword1;
   var np2 = req.body.newpassword2;
   db.one('select password from person where id='+id)
-  .then(function (data) {
-    if (data.password == op) {
-      if (np1 == np2) {
-        db.none('update person set password ');
+    .then(function(data) {
+      if (data.password == op) {
+        if (np1 == np2) {
+          db.none("update person set password='"+np1+"' where password='"+op+"'");
+          res.render('changepass.html');
+        }
+        else {
+          throw 'NEW PASSWORDS DOES NOT MATCH!';
+        }
       }
       else {
-        res.render('signup.html', {message: 'WRONG PASSWORD COMBINATION!'});
+        throw 'WRONG PASSWORD!';
       }
-      res.render('signup.html', {message: 'INSERTED!'});
-    }
-    else {
-      res.render('signup.html', {message: 'WRONG PASSWORD!'})
-    }
-  });
-  res.render('changepass.html');
+    })
+    .catch(function(error) {
+      console.log('ERROR IN CHANGEPASSWORD : ' + error);
+      res.render('changepass.html');
+    });
 });
-
+////////////////////////////////////////////////////////////////////////////////
+app.get('/createproject', function(req, res) {
+  res.render('createproject.html');
+});
+app.post('/createproject', function(req, res) {
+  var id =            generateID('project');
+  var creatorid =     req.body.creatorid;
+  var description =   req.body.description;
+  var createdate =    req.body.createdate;
+  var deadline =      req.body.deadline;
+  db.none("insert into project (id, user_id, description, create_date, deadline) "+
+  "values("+id+","+creatorid+",'"+description+"','"+createdate+"','"+deadline+"')")
+    .then(function() {
+      res.render('createproject.html');
+    })
+    .catch(function(error) {
+      console.log('ERROR IN CREATE PROJECT : ' + error);
+      res.render('createproject.html');
+    });
+});
+////////////////////////////////////////////////////////////////////////////////
+app.get('/createteam', function(req, res) {
+  res.render('createproject.html');
+});
+app.post('/createteam', function(req, res) {
+  var id =            generateID('team');
+  var creatorid =     req.body.creatorid;
+  var projectid =     req.body.projectid;
+  var teamid =        req.body.teamid;
+  var createdate =    req.body.createdate;
+  var name =          req.body.name;
+  var description =   req.body.description;
+  db.none("insert into team (id, user_id, project_id, team_id, create_date, name, description) "+
+  "values("+id+","+creatorid+","+projectid+","+teamid+",'"+createdate+"','"+name+"','"+description+"')")
+    .then(function() {
+      res.render('createteam.html');
+    })
+    .catch(function(error) {
+      console.log('ERROR IN CREATE TEAM : ' + error);
+      res.render('createteam.html');
+    });
+});
 ////////////////////////////////////////////////////////////////////////////////
 
 function generateID(entity) {
@@ -105,7 +131,6 @@ function generateID(entity) {
   }
   return id;
 }
-
 function randomBetween(min,max) {
 	return Math.floor((Math.random()*(max - min)+min));
 }

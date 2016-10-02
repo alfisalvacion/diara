@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DIARA</title>
+    <link rel="stylesheet" href="/static/stylesheets/main.css">
+  </head>
+  <body>
+    <h1>CREATE TEAM</h1>
+    <form class="" action="/createteam" method="post">
+      <div><input type="number"   name="creatorid"    placeholder="creator id"></div><!--OPTIONAL-->
+      <div><input type="number"   name="projectid"    placeholder="project id"></div>
+      <div><input type="number"   name="teamid"       placeholder="team id"></div>
+      <div><input type="Date"     name="createdate"   placeholder="createdate"></div>
+      <div><input type="text"     name="name"         placeholder="name"></div>
+      <div><input type="textarea" name="description"  placeholder="description"></div>
+      <button>Okay</button>
+    </form>
+    <a href="/"><button>Back to Index</button></a>
+  </body>
+</html>
