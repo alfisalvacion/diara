@@ -60,7 +60,7 @@ app.post('/changepassword', function(req, res) {
     .then(function(data) {
       if (data.password == op) {
         if (np1 == np2) {
-          db.none("update person set password='"+np1+"' where password='"+op+"'");
+          db.none("update person set password='"+np1+"' where password='"+op+"' and id="+id);
           res.render('changepass.html');
         }
         else {
