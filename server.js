@@ -41,11 +41,11 @@ app.post('/', function(req, res) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-app.get('/sign-up', function(req, res) {
+app.get('/signup', function(req, res) {
   res.render('signup.html');
 });
 
-app.post('/sign-up', function(req, res) {
+app.post('/signup', function(req, res) {
   var id =        generateID('person');
   var firstname = req.body.firstname;
   var lastname =  req.body.lastname;
@@ -65,11 +65,11 @@ app.post('/sign-up', function(req, res) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-app.get('/change-password', function(req, res) {
+app.get('/changepassword', function(req, res) {
   res.render('changepass.html');
 });
 
-app.post('/change-password', function(req, res) {
+app.post('/changepassword', function(req, res) {
   var id = req.body.id;
   var op = req.body.oldpassword;
   var np1 = req.body.newpassword1;
